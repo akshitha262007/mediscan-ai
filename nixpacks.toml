@@ -1,0 +1,11 @@
+# nixpacks.toml — Railway build configuration
+# Tells Railway to install Tesseract OCR alongside Python dependencies
+
+[phases.setup]
+nixPkgs = ["tesseract"]
+
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+[start]
+cmd = "gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT --timeout 120"

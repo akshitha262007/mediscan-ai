@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediScan AI</title>
+
+    <link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+    <!-- RESULTS DASHBOARD -->
+
+<div class="dashboard">
+
+    <!-- HERO VERDICT -->
+
+    <div class="verdict-card">
+
+        <h1>⚠ Highly Suspicious</h1>
+
+        <p>
+            AI detected multiple anomalies,
+            possible forged regions,
+            and metadata inconsistencies.
+        </p>
+
+        <div class="score">
+            82%
+        </div>
+
+    </div>
+
+    <!-- METRICS -->
+
+    <div class="metrics">
+
+        <div class="metric-card">
+            <h2>91%</h2>
+            <p>OCR Confidence</p>
+        </div>
+
+        <div class="metric-card">
+            <h2>HIGH</h2>
+            <p>Metadata Risk</p>
+        </div>
+
+        <div class="metric-card">
+            <h2>7</h2>
+            <p>Tampered Regions</p>
+        </div>
+
+        <div class="metric-card">
+            <h2>MEDIUM</h2>
+            <p>Signature Trust</p>
+        </div>
+
+    </div>
+
+    <!-- TIMELINE -->
+
+    <div class="timeline">
+
+        <h2>AI Scan Timeline</h2>
+
+        <ul>
+
+            <li>✔ Metadata verification completed</li>
+
+            <li>✔ OCR text extraction completed</li>
+
+            <li>⚠ Compression anomalies detected</li>
+
+            <li>⚠ Signature mismatch suspected</li>
+
+            <li>✔ Heatmap generated successfully</li>
+
+        </ul>
+
+    </div>
+
+</div>
+    <!-- LOADING SCREEN -->
+
+<div class="loading-screen" id="loadingScreen">
+
+    <div class="loading-card">
+
+        <div class="loading-robot">
+            🤖🩺
+        </div>
+
+        <h2 id="loadingText">
+            Initializing AI Engine...
+        </h2>
+
+        <div class="progress-container">
+
+            <div class="progress-bar" id="progressBar"></div>
+
+        </div>
+
+        <p class="scan-status">
+            MediScan AI is analyzing your document
+        </p>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+    <!-- MAIN CONTAINER -->
+
+    <div class="main-container">
+
+        <!-- LEFT SECTION -->
+
+        <div class="left-section">
+
+            <div class="badge">
+                ✨ AI-Powered Healthcare Security
+            </div>
+
+            <h1>
+                MediScan AI
+            </h1>
+
+            <p>
+                Intelligent medical forgery detection platform
+                built for hospitals, clinics, and healthcare verification.
+            </p>
+
+            <button>
+                Launch AI Scan
+            </button>
+
+        </div>
+
+        <!-- RIGHT SECTION -->
+
+        <div class="right-section">
+
+            <div class="upload-card">
+
+                <div class="robot">
+                    🤖🩺
+                </div>
+
+                <h2>
+                    Upload Medical Report
+                </h2>
+
+                <p>
+                    Drag and drop your report below
+                </p>
+
+                <input type="file">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+/* MediScan AI — Privacy, Disclaimer & Footer Extra Styles */
+
+/* FOOTER */
+.footer-links { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.footer-link  { color: #00d4aa; font-size: 12px; transition: opacity 0.15s; }
+.footer-link:hover { opacity: 0.8; text-decoration: underline; }
+.footer-sep   { color: #4b5563; font-size: 12px; }
+
+/* LEGAL DISCLAIMER BANNER (result page) */
+.legal-disclaimer-banner {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 14px;
+    margin-bottom: 24px;
+}
+.legal-disclaimer-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 24px;
+}
+.legal-disclaimer-icon {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    background: rgba(245,158,11,0.15);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+}
+.legal-disclaimer-icon svg { width: 18px; height: 18px; color: #f59e0b; }
+.legal-disclaimer-text { flex: 1; min-width: 0; }
+.legal-disclaimer-text strong { font-size: 13px; color: #fbbf24; display: block; margin-bottom: 6px; }
+.legal-disclaimer-text p { font-size: 12px; color: #94a3b8; line-height: 1.6; margin: 0; }
+.legal-disclaimer-text p strong { display: inline; font-size: 12px; color: #fbbf24; }
+.legal-disclaimer-link {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: #f59e0b;
+    white-space: nowrap;
+    margin-top: 2px;
+    transition: opacity 0.15s;
+}
+.legal-disclaimer-link:hover { opacity: 0.75; text-decoration: underline; }
+
+/* PRIVACY PAGE */
+.privacy-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+/* Sticky TOC */
+.privacy-toc {
+    position: sticky;
+    top: calc(var(--header-h) + 20px);
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 20px;
+}
+.toc-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-bottom: 14px; }
+.toc-link {
+    display: block;
+    font-size: 13px;
+    color: #94a3b8;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+}
+.toc-link:hover { background: rgba(0,212,170,0.08); color: #00d4aa; }
+
+/* Policy body */
+.privacy-body {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 36px 40px;
+}
+
+.privacy-alert {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #93c5fd;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+.privacy-alert svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+.privacy-alert strong { color: #60a5fa; }
+
+.privacy-section { margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.privacy-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.privacy-heading {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: #f0f4f8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.privacy-heading::before {
+    content: '';
+    display: block;
+    width: 3px; height: 18px;
+    background: #00d4aa;
+    border-radius: 99px;
+    flex-shrink: 0;
+}
+
+.privacy-section p {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+.privacy-section p:last-child { margin-bottom: 0; }
+
+.privacy-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.privacy-list li {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.6;
+    padding-left: 20px;
+    position: relative;
+}
+.privacy-list li::before {
+    content: '›';
+    position: absolute;
+    left: 4px;
+    color: #00d4aa;
+    font-weight: 700;
+}
+.privacy-list li strong { color: #e2e8f0; }
+
+.privacy-link { color: #00d4aa; }
+.privacy-link:hover { text-decoration: underline; }
+
+.privacy-note {
+    font-size: 13px;
+    color: #94a3b8;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border-left: 3px solid #00d4aa;
+    border-radius: 0 8px 8px 0;
+    margin-top: 12px;
+}
+.privacy-note strong { color: #e2e8f0; }
+
+.privacy-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: #a78bfa;
+}
+
+/* Privacy table */
+.privacy-table-wrap { overflow-x: auto; margin-bottom: 12px; }
+.privacy-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.privacy-table th {
+    padding: 10px 14px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+    color: #64748b;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+}
+.privacy-table td {
+    padding: 11px 14px;
+    color: #94a3b8;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    line-height: 1.5;
+}
+.privacy-table tr:last-child td { border-bottom: none; }
+.privacy-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* Disclaimer box */
+.disclaimer-box {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 12px;
+}
+.disclaimer-box svg { width: 22px; height: 22px; color: #f59e0b; flex-shrink: 0; margin-top: 2px; }
+.disclaimer-box p { font-size: 13px; color: #94a3b8; line-height: 1.7; margin-bottom: 10px; }
+.disclaimer-box p:last-child { margin-bottom: 0; }
+.disclaimer-box strong { color: #fbbf24; }
+
+/* Contact block */
+.contact-block { display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
+.contact-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #94a3b8; }
+.contact-item svg { width: 16px; height: 16px; color: #00d4aa; flex-shrink: 0; }
+.privacy-update-note { font-size: 12px; color: #4b5563; font-style: italic; margin-top: 16px !important; }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .privacy-layout { grid-template-columns: 1fr; }
+    .privacy-toc { position: static; }
+    .privacy-body { padding: 24px 20px; }
+    .legal-disclaimer-inner { flex-direction: column; }
+    .legal-disclaimer-link { margin-top: 8px; }
+}

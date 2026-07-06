@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account — MediScan AI</title>
+    <meta name="description" content="Create your MediScan AI account to start verifying medical documents.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/effects.css') }}">
+</head>
+<body class="auth-body">
+
+<div class="creator-banner">
+    <span class="creator-banner-text">
+        <span class="banner-dot"></span>
+        Created by <strong>CREOVATORS OF SVCE</strong>
+        <span class="banner-dot"></span>
+    </span>
+</div>
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+<canvas id="particleCanvas"></canvas>
+
+<div class="auth-layout">
+
+    <!-- LEFT — Brand Panel -->
+    <div class="auth-brand">
+        <div class="auth-brand-inner">
+            <div class="auth-logo">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="10" fill="#00d4aa" fill-opacity="0.15"/>
+                    <path d="M20 7 L28 14 L28 26 L20 33 L12 26 L12 14 Z" stroke="#00d4aa" stroke-width="2" fill="none"/>
+                    <circle cx="20" cy="20" r="4" fill="#00d4aa"/>
+                    <line x1="20" y1="12" x2="20" y2="16" stroke="#00d4aa" stroke-width="2"/>
+                    <line x1="20" y1="24" x2="20" y2="28" stroke="#00d4aa" stroke-width="2"/>
+                </svg>
+                <span>MediScan <b>AI</b></span>
+            </div>
+
+            <h1 class="auth-headline">
+                Join the platform<br>healthcare trusts.
+            </h1>
+
+            <p class="auth-subtext">
+                Set up your account in under a minute. No credit card required.
+                Analyse your first document immediately after signing up.
+            </p>
+
+            <div class="auth-steps">
+                <div class="step"><span class="step-num">1</span>Create your account</div>
+                <div class="step"><span class="step-num">2</span>Upload a medical report</div>
+                <div class="step"><span class="step-num">3</span>Review forensic findings</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT — Form Panel -->
+    <div class="auth-form-panel">
+        <div class="auth-form-card">
+            <h2 class="auth-form-title">Create your account</h2>
+            <p class="auth-form-sub">Free access to MediScan AI forensics</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="auth-alert auth-alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('auth.register') }}" id="registerForm">
+
+                <div class="form-row-2col">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" name="username"
+                               class="form-input" placeholder="dr_sharma"
+                               required minlength="3" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" id="email" name="email"
+                               class="form-input" placeholder="you@hospital.com"
+                               required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="organization" class="form-label">
+                        Organisation
+                        <span class="label-optional">(optional)</span>
+                    </label>
+                    <input type="text" id="organization" name="organization"
+                           class="form-input"
+                           placeholder="Apollo Hospitals / TPA Name / Clinic">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password"
+                               class="form-input" placeholder="Min. 8 characters"
+                               required minlength="8"
+                               autocomplete="new-password"
+                               oninput="updateStrength(this.value)">
+                        <button type="button" class="password-toggle"
+                                onclick="togglePassword('password', this)"
+                                aria-label="Toggle password visibility">
+                            <svg class="eye-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+                        </button>
+                    </div>
+                    <div class="strength-bar-wrap">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <span class="strength-label" id="strengthLabel"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">Confirm password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm_password"
+                               name="confirm_password" class="form-input"
+                               placeholder="••••••••"
+                               required autocomplete="new-password">
+                        <button type="button" class="password-toggle"
+                                onclick="togglePassword('confirm_password', this)"
+                                aria-label="Toggle confirm password visibility">
+                            <svg class="eye-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn-full" id="registerBtn">
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="{{ url_for('auth.login') }}">Sign in</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function togglePassword(fieldId, btn) {
+    const field = document.getElementById(fieldId);
+    field.type = field.type === 'password' ? 'text' : 'password';
+}
+
+function updateStrength(val) {
+    const bar   = document.getElementById('strengthBar');
+    const label = document.getElementById('strengthLabel');
+    let strength = 0;
+    if (val.length >= 8)                 strength++;
+    if (/[A-Z]/.test(val))              strength++;
+    if (/[0-9]/.test(val))              strength++;
+    if (/[^A-Za-z0-9]/.test(val))       strength++;
+
+    const levels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+    const colors = ['', '#ef4444', '#f59e0b', '#3b82f6', '#22c55e'];
+    bar.style.width    = (strength * 25) + '%';
+    bar.style.background = colors[strength] || 'transparent';
+    label.textContent  = levels[strength] || '';
+    label.style.color  = colors[strength] || '';
+}
+
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    const pw  = document.getElementById('password').value;
+    const cpw = document.getElementById('confirm_password').value;
+    if (pw !== cpw) {
+        e.preventDefault();
+        alert('Passwords do not match.');
+        return;
+    }
+    const btn = document.getElementById('registerBtn');
+    btn.textContent = 'Creating account…';
+    btn.disabled = true;
+});
+</script>
+<script src="{{ url_for('static', filename='js/effects.js') }}"></script>
+</body>
+</html>

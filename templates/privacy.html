@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — MediScan AI{% endblock %}
+{% block meta_desc %}MediScan AI Privacy Policy — how we collect, use, and protect your data under DPDPA 2023.{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Privacy Policy</h1>
+        <p class="page-subtitle">Last updated: July 2025 &nbsp;·&nbsp; Effective immediately upon account creation</p>
+    </div>
+</div>
+
+<div class="privacy-layout">
+
+    <!-- Table of Contents -->
+    <aside class="privacy-toc">
+        <h3 class="toc-title">Contents</h3>
+        <nav>
+            <a href="#section-1"  class="toc-link">1. Who we are</a>
+            <a href="#section-2"  class="toc-link">2. What we collect</a>
+            <a href="#section-3"  class="toc-link">3. How we use your data</a>
+            <a href="#section-4"  class="toc-link">4. Data storage & retention</a>
+            <a href="#section-5"  class="toc-link">5. Who we share data with</a>
+            <a href="#section-6"  class="toc-link">6. Your rights (DPDPA 2023)</a>
+            <a href="#section-7"  class="toc-link">7. Cookies</a>
+            <a href="#section-8"  class="toc-link">8. Security</a>
+            <a href="#section-9"  class="toc-link">9. Medical disclaimer</a>
+            <a href="#section-10" class="toc-link">10. Contact us</a>
+        </nav>
+    </aside>
+
+    <!-- Policy Body -->
+    <div class="privacy-body">
+
+        <div class="privacy-alert">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+            <span>This platform is currently in academic / beta deployment. It is operated by students of <strong>SVCE (Sri Venkateswara College of Engineering)</strong> under the team name <strong>CREOVATORS</strong>. We are not a registered company.</span>
+        </div>
+
+        <!-- 1 -->
+        <section class="privacy-section" id="section-1">
+            <h2 class="privacy-heading">1. Who We Are</h2>
+            <p>MediScan AI is a forensic document analysis platform developed by <strong>CREOVATORS OF SVCE</strong>, a student team at Sri Venkateswara College of Engineering. This platform is offered for educational, research, and professional evaluation purposes.</p>
+            <p>Contact: <a href="mailto:creovators@svce.ac.in" class="privacy-link">creovators@svce.ac.in</a></p>
+        </section>
+
+        <!-- 2 -->
+        <section class="privacy-section" id="section-2">
+            <h2 class="privacy-heading">2. What We Collect</h2>
+            <div class="privacy-table-wrap">
+                <table class="privacy-table">
+                    <thead>
+                        <tr><th>Data</th><th>When collected</th><th>Required?</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Username &amp; Email</td><td>Account registration</td><td>Yes</td></tr>
+                        <tr><td>Password (hashed)</td><td>Account registration</td><td>Yes</td></tr>
+                        <tr><td>Organisation name</td><td>Account registration</td><td>No</td></tr>
+                        <tr><td>Uploaded documents</td><td>Each scan submission</td><td>Yes (for analysis)</td></tr>
+                        <tr><td>Forensic analysis results</td><td>Automatically generated</td><td>Yes (stored to show history)</td></tr>
+                        <tr><td>IP address &amp; timestamps</td><td>Every server request</td><td>Automatic (server logs)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="privacy-note">
+                <strong>We do not collect:</strong> payment information, biometric data, or any data from third parties.
+            </div>
+        </section>
+
+        <!-- 3 -->
+        <section class="privacy-section" id="section-3">
+            <h2 class="privacy-heading">3. How We Use Your Data</h2>
+            <ul class="privacy-list">
+                <li>To authenticate you and keep your account secure</li>
+                <li>To run forensic analysis on uploaded documents and display results</li>
+                <li>To maintain your scan history within your account</li>
+                <li>To generate downloadable PDF forensic reports</li>
+                <li>To improve the platform's accuracy and reliability (anonymised, aggregated)</li>
+            </ul>
+            <p>We <strong>do not</strong> use your documents to train AI models, sell data to third parties, or use data for advertising.</p>
+        </section>
+
+        <!-- 4 -->
+        <section class="privacy-section" id="section-4">
+            <h2 class="privacy-heading">4. Data Storage &amp; Retention</h2>
+            <ul class="privacy-list">
+                <li><strong>Uploaded files</strong> — stored on the server for analysis. You may delete them at any time from your dashboard (feature coming soon).</li>
+                <li><strong>Forensic results</strong> — stored in our database and linked to your account.</li>
+                <li><strong>Account data</strong> — retained as long as your account is active.</li>
+                <li><strong>Inactive accounts</strong> — data will be purged after 12 months of inactivity.</li>
+            </ul>
+        </section>
+
+        <!-- 5 -->
+        <section class="privacy-section" id="section-5">
+            <h2 class="privacy-heading">5. Who We Share Data With</h2>
+            <p><strong>Nobody.</strong> We do not sell, trade, or transfer your personal data to outside parties. If we use third-party hosting (e.g., Railway, Render), those providers have their own privacy policies governing infrastructure-level data.</p>
+        </section>
+
+        <!-- 6 -->
+        <section class="privacy-section" id="section-6">
+            <h2 class="privacy-heading">6. Your Rights (DPDPA 2023)</h2>
+            <p>Under India's <strong>Digital Personal Data Protection Act, 2023</strong>, you have the right to:</p>
+            <ul class="privacy-list">
+                <li><strong>Access</strong> — request a copy of the personal data we hold about you</li>
+                <li><strong>Correction</strong> — correct inaccurate or incomplete data</li>
+                <li><strong>Erasure</strong> — request deletion of your account and all associated data</li>
+                <li><strong>Grievance</strong> — raise a complaint with us or with the Data Protection Board of India</li>
+            </ul>
+            <p>To exercise any of these rights, email us at <a href="mailto:creovators@svce.ac.in" class="privacy-link">creovators@svce.ac.in</a>. We will respond within <strong>72 hours</strong>.</p>
+        </section>
+
+        <!-- 7 -->
+        <section class="privacy-section" id="section-7">
+            <h2 class="privacy-heading">7. Cookies</h2>
+            <p>MediScan AI uses a single session cookie (<code class="privacy-code">session</code>) to keep you logged in. No tracking cookies, analytics cookies, or advertising cookies are used. The session cookie expires when you sign out or close your browser (unless "Remember me" is selected).</p>
+        </section>
+
+        <!-- 8 -->
+        <section class="privacy-section" id="section-8">
+            <h2 class="privacy-heading">8. Security</h2>
+            <ul class="privacy-list">
+                <li>Passwords are hashed using <strong>bcrypt</strong> — we never store plaintext passwords</li>
+                <li>All sessions are signed with a server-side secret key</li>
+                <li>File uploads are validated by extension and magic bytes before processing</li>
+                <li>Users can only access their own scan results — enforced at the route level</li>
+            </ul>
+            <p>Despite these measures, no system is 100% secure. Do not upload documents containing sensitive patient PII unless you are authorised to do so.</p>
+        </section>
+
+        <!-- 9 -->
+        <section class="privacy-section" id="section-9">
+            <h2 class="privacy-heading">9. Medical &amp; Legal Disclaimer</h2>
+            <div class="disclaimer-box">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                <div>
+                    <p><strong>MediScan AI is a forensic analysis tool for investigative support only.</strong></p>
+                    <p>Results generated by this platform — including forgery scores, ELA heatmaps, metadata findings, and OCR analysis — are <strong>not legal evidence</strong> and should <strong>not</strong> be used as the sole basis for any clinical, legal, insurance, or administrative determination.</p>
+                    <p>All findings must be independently reviewed and validated by a qualified forensic expert or authorised professional before any action is taken. The developers of MediScan AI accept no liability for decisions made based on the platform's output.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10 -->
+        <section class="privacy-section" id="section-10">
+            <h2 class="privacy-heading">10. Contact Us</h2>
+            <p>For any privacy-related questions, data requests, or concerns:</p>
+            <div class="contact-block">
+                <div class="contact-item">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                    <a href="mailto:creovators@svce.ac.in" class="privacy-link">creovators@svce.ac.in</a>
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                    SVCE, Pennalur, Sriperumbudur Taluk, Tamil Nadu — 602117
+                </div>
+            </div>
+            <p class="privacy-update-note">We reserve the right to update this Privacy Policy at any time. Continued use of the platform after changes constitutes acceptance of the revised policy.</p>
+        </section>
+
+    </div>
+</div>
+{% endblock %}
