@@ -260,3 +260,39 @@
         });
     });
 })();
+
+/* ═════════════════════════════════════════ HAMBURGER MENU */
+(function initHamburger() {
+    const btn      = document.getElementById('hamburgerBtn');
+    const menu     = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('mobileBackdrop');
+    if (!btn || !menu) return;
+
+    function open() {
+        btn.classList.add('is-open');
+        menu.classList.add('is-open');
+        backdrop && backdrop.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+    }
+    function close() {
+        btn.classList.remove('is-open');
+        menu.classList.remove('is-open');
+        backdrop && backdrop.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', () =>
+        menu.classList.contains('is-open') ? close() : open()
+    );
+    backdrop && backdrop.addEventListener('click', close);
+
+    // Close on nav link click
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') close();
+    });
+})();

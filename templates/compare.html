@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Documents — MediScan AI{% endblock %}
+{% block meta_desc %}Compare two medical documents side-by-side and analyse their forensic authenticity profiles.{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/compare.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title" data-i18n="cmp_title">Compare Documents</h1>
+        <p class="page-subtitle" data-i18n="cmp_subtitle">Upload two documents to compare their authenticity side-by-side</p>
+    </div>
+</div>
+
+<form method="POST" action="{{ url_for('compare.compare_upload') }}" enctype="multipart/form-data" id="compareForm">
+
+    {% if not compared %}
+    <!-- UPLOAD ZONES -->
+    <div class="compare-layout">
+
+        <!-- Document A -->
+        <div class="compare-upload-zone" id="zoneA">
+            <div class="compare-upload-icon">
+                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+            </div>
+            <div class="compare-zone-label" data-i18n="cmp_doc_a">Document A</div>
+            <div class="compare-zone-sub">Original / Reference document</div>
+            <label class="btn-primary" for="file_a" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:14px;">
+                <svg viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                Choose File
+            </label>
+            <input type="file" name="file_a" id="file_a" class="compare-file-input" accept=".jpg,.jpeg,.png,.pdf" required onchange="showFile(this,'chosenA')">
+            <div class="compare-file-chosen" id="chosenA"></div>
+        </div>
+
+        <!-- Document B -->
+        <div class="compare-upload-zone" id="zoneB">
+            <div class="compare-upload-icon" style="background:rgba(59,130,246,0.1)">
+                <svg viewBox="0 0 20 20" fill="currentColor" style="color:#60a5fa"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+            </div>
+            <div class="compare-zone-label" style="color:#60a5fa" data-i18n="cmp_doc_b">Document B</div>
+            <div class="compare-zone-sub">Suspected / Modified document</div>
+            <label class="btn-primary" for="file_b" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:14px;background:rgba(59,130,246,0.9);">
+                <svg viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                Choose File
+            </label>
+            <input type="file" name="file_b" id="file_b" class="compare-file-input" accept=".jpg,.jpeg,.png,.pdf" required onchange="showFile(this,'chosenB')">
+            <div class="compare-file-chosen" id="chosenB"></div>
+        </div>
+    </div>
+
+    <!-- ACTION BAR -->
+    <div class="compare-action-bar">
+        <div class="compare-vs-badge">VS</div>
+        <button type="submit" class="btn-primary" id="compareBtn" style="padding:14px 40px;font-size:15px;">
+            <svg viewBox="0 0 20 20" fill="currentColor" style="width:18px;height:18px"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span data-i18n="cmp_compare">Compare Now</span>
+        </button>
+    </div>
+    {% endif %}
+
+    {% if compared %}
+    <!-- RESULTS -->
+    <div class="compare-results">
+        {% for r in results %}
+        {% set report = r.report %}
+        {% set score  = report.forgery_score %}
+        {% set color  = 'red' if score > 60 else ('amber' if score > 30 else 'green') %}
+        {% set pclass = 'verdict-pill-red' if score > 60 else ('verdict-pill-amber' if score > 30 else 'verdict-pill-green') %}
+        {% set dclass = 'doc-a' if r.label == 'A' else 'doc-b' %}
+
+        <div class="compare-result-card {{ dclass }}">
+            <div class="compare-result-header">
+                <div class="compare-doc-badge">{{ r.label }}</div>
+                <div class="compare-result-filename" title="{{ r.filename }}">{{ r.filename }}</div>
+                <div class="compare-verdict-pill {{ pclass }}">{{ report.verdict.replace('_',' ') }}</div>
+            </div>
+            <div class="compare-result-body">
+                <div class="compare-score-row">
+                    <div class="compare-score-number {{ color }}">{{ score }}</div>
+                    <div class="compare-score-meta">
+                        /100<br>
+                        <span style="font-size:11px;color:#64748b">Forgery Risk</span>
+                    </div>
+                </div>
+                <div class="compare-modules">
+                    {% for mod_key, mod_label in [('ela','ELA'),('metadata','Metadata'),('integrity','Integrity'),('ocr','OCR'),('qr_stamp','QR/Stamp')] %}
+                    {% set m = report.modules.get(mod_key, {}) %}
+                    {% set s = m.get('score', 0) %}
+                    {% set fc = 'red' if s > 60 else ('amber' if s > 30 else '') %}
+                    <div class="compare-module-row">
+                        <span class="compare-module-name">{{ mod_label }}</span>
+                        <div class="compare-module-bar">
+                            <div class="compare-module-fill {{ fc }}" style="width:{{ s }}%"></div>
+                        </div>
+                        <span class="compare-module-score">{{ s|int }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Top findings -->
+                <div style="margin-top:16px">
+                    {% for f in report.all_findings[:4] %}
+                    <div style="font-size:11px;color:#64748b;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);line-height:1.5">
+                        <span style="color:{{ '#ef4444' if f.level=='high' else ('#f59e0b' if f.level=='medium' else ('#22c55e' if f.level=='ok' else '#60a5fa')) }}">●</span>
+                        {{ f.text[:100] }}{% if f.text|length > 100 %}…{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- SIMILARITY INSIGHT -->
+    <div class="compare-insight">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        <div class="compare-insight-text">
+            <strong data-i18n="cmp_similarity">Similarity Insight</strong><br>
+            {{ similarity }}
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px">
+        <a href="{{ url_for('compare.compare_page') }}" class="btn-secondary">
+            ← Compare New Documents
+        </a>
+    </div>
+    {% endif %}
+
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function showFile(input, labelId) {
+    const el = document.getElementById(labelId);
+    if (input.files.length) {
+        el.textContent = '✓ ' + input.files[0].name;
+        el.classList.add('show');
+    }
+}
+document.getElementById('compareForm') && document.getElementById('compareForm').addEventListener('submit', function() {
+    const btn = document.getElementById('compareBtn');
+    if (btn) { btn.textContent = 'Analysing…'; btn.disabled = true; }
+});
+</script>
+{% endblock %}

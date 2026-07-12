@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/effects.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/privacy.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 
     {% block extra_head %}{% endblock %}
 </head>
@@ -50,17 +51,31 @@
     </a>
 
     <div class="navbar-links">
-        <a href="{{ url_for('dashboard.dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">
+        <a href="{{ url_for('dashboard.dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}" data-i18n="nav_dashboard">
             <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
             Dashboard
         </a>
-        <a href="{{ url_for('scan.scan_page') }}" class="nav-link {% if request.endpoint == 'scan.scan_page' %}active{% endif %}">
+        <a href="{{ url_for('scan.scan_page') }}" class="nav-link {% if request.endpoint == 'scan.scan_page' %}active{% endif %}" data-i18n="nav_new_scan">
             <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
             New Scan
+        </a>
+        <a href="{{ url_for('compare.compare_page') }}" class="nav-link {% if request.endpoint == 'compare.compare_page' %}active{% endif %}" data-i18n="nav_compare">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Compare
         </a>
     </div>
 
     <div class="navbar-user">
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+            <button class="lang-btn" id="langSwitcherBtn" aria-label="Change language">🌐 EN</button>
+            <div class="lang-dropdown" id="langDropdown">
+                <button onclick="setLang('en')">🇬🇧 English</button>
+                <button onclick="setLang('hi')">🇮🇳 हिंदी</button>
+                <button onclick="setLang('kn')">🇮🇳 ಕನ್ನಡ</button>
+                <button onclick="setLang('te')">🇮🇳 తెలుగు</button>
+            </div>
+        </div>
         <div class="user-avatar">{{ current_user.username[0].upper() }}</div>
         <div class="user-info">
             <span class="user-name">{{ current_user.username }}</span>
@@ -70,7 +85,45 @@
             <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
         </a>
     </div>
+
+    <!-- Hamburger button — mobile only -->
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+    </button>
 </nav>
+
+<!-- Mobile slide-down menu -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-user">
+        <div class="mobile-avatar">{{ current_user.username[0].upper() }}</div>
+        <div>
+            <div class="mobile-username">{{ current_user.username }}</div>
+            <div class="mobile-org">{{ current_user.organization or 'MediScan User' }}</div>
+        </div>
+    </div>
+    <nav class="mobile-nav">
+        <a href="{{ url_for('dashboard.dashboard') }}" class="mobile-nav-link {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="{{ url_for('scan.scan_page') }}" class="mobile-nav-link {% if request.endpoint == 'scan.scan_page' %}active{% endif %}">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            New Scan
+        </a>
+        <a href="{{ url_for('dashboard.privacy') }}" class="mobile-nav-link">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/></svg>
+            Privacy Policy
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="mobile-nav-link mobile-logout">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+            Sign Out
+        </a>
+    </nav>
+</div>
+<!-- Mobile menu backdrop -->
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
 
 <!-- ════════════════════════════════════════════════════════ FLASH MESSAGES -->
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -108,6 +161,9 @@
 </footer>
 
 {% block extra_scripts %}{% endblock %}
+<script>window._currentUserInitial = '{{ current_user.username[0].upper() if current_user.is_authenticated else "U" }}';</script>
 <script src="{{ url_for('static', filename='js/effects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 </body>
 </html>

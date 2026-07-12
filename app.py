@@ -14,6 +14,8 @@ from models.scan import Scan  # noqa: F401 – needed for db.create_all()
 from routes.auth      import auth_bp
 from routes.scan      import scan_bp
 from routes.dashboard import dashboard_bp
+from routes.compare   import compare_bp
+from routes.ai_chat   import chat_bp
 
 
 def create_app(config_class=Config):
@@ -37,6 +39,8 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp)
     app.register_blueprint(scan_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(compare_bp)
+    app.register_blueprint(chat_bp)
 
     # ── Root redirect ─────────────────────────────────────────────────────────
     @app.route('/')

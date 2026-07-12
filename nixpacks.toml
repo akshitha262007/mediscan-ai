@@ -1,8 +1,7 @@
 # nixpacks.toml — Railway build configuration
-# Tells Railway to install Tesseract OCR alongside Python dependencies
 
 [phases.setup]
-nixPkgs = ["tesseract"]
+nixPkgs = ["tesseract", "zbar"]
 
 [phases.install]
 cmds = ["pip install -r requirements.txt"]
