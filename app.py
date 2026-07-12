@@ -16,6 +16,7 @@ from routes.scan      import scan_bp
 from routes.dashboard import dashboard_bp
 from routes.compare   import compare_bp
 from routes.ai_chat   import chat_bp
+from routes.profile   import profile_bp
 
 
 def create_app(config_class=Config):
@@ -41,6 +42,7 @@ def create_app(config_class=Config):
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(compare_bp)
     app.register_blueprint(chat_bp)
+    app.register_blueprint(profile_bp)
 
     # ── Root redirect ─────────────────────────────────────────────────────────
     @app.route('/')

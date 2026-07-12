@@ -261,6 +261,19 @@
     });
 })();
 
+/* ═════════════════════════════════════════ USER DROPDOWN */
+(function initUserDropdown() {
+    const btn  = document.getElementById('userDropBtn');
+    const menu = document.getElementById('userDropMenu');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        menu.classList.toggle('open');
+    });
+    document.addEventListener('click', () => menu.classList.remove('open'));
+})();
+
 /* ═════════════════════════════════════════ HAMBURGER MENU */
 (function initHamburger() {
     const btn      = document.getElementById('hamburgerBtn');

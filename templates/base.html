@@ -76,14 +76,28 @@
                 <button onclick="setLang('te')">🇮🇳 తెలుగు</button>
             </div>
         </div>
-        <div class="user-avatar">{{ current_user.username[0].upper() }}</div>
-        <div class="user-info">
-            <span class="user-name">{{ current_user.username }}</span>
-            <span class="user-org">{{ current_user.organization or 'MediScan User' }}</span>
+        <!-- User dropdown -->
+        <div class="user-dropdown-wrap">
+            <button class="user-dropdown-btn" id="userDropBtn">
+                <div class="user-avatar">{{ current_user.username[0].upper() }}</div>
+                <div class="user-info">
+                    <span class="user-name">{{ current_user.username }}</span>
+                    <span class="user-org">{{ current_user.organization or 'MediScan User' }}</span>
+                </div>
+                <svg viewBox="0 0 20 20" fill="currentColor" style="width:14px;height:14px;color:#64748b;flex-shrink:0"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            </button>
+            <div class="user-dropdown-menu" id="userDropMenu">
+                <a href="{{ url_for('profile.profile') }}" class="user-drop-item">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+                    My Profile
+                </a>
+                <div class="user-drop-divider"></div>
+                <a href="{{ url_for('auth.logout') }}" class="user-drop-item user-drop-signout">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+                    Sign Out
+                </a>
+            </div>
         </div>
-        <a href="{{ url_for('auth.logout') }}" class="logout-btn" title="Sign out">
-            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
-        </a>
     </div>
 
     <!-- Hamburger button — mobile only -->
