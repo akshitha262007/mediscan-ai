@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/effects.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/characters.css') }}">
 </head>
 <body class="auth-body">
 
@@ -29,6 +30,80 @@
     <!-- LEFT — Brand Panel -->
     <div class="auth-brand">
         <div class="auth-brand-inner">
+            <!-- Animated Doctor Character -->
+            <div class="doctor-wrap">
+                <svg class="doctor-svg" viewBox="0 0 180 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Shadow glow behind -->
+                    <ellipse cx="90" cy="210" rx="55" ry="10" fill="rgba(0,212,170,0.08)"/>
+                    <!-- Lab coat / body -->
+                    <rect x="35" y="115" width="110" height="90" rx="18" fill="#1e3a5f"/>
+                    <!-- Coat lapels -->
+                    <path d="M90 115 L65 145 L90 135 L115 145 Z" fill="#f0f4f8" opacity="0.9"/>
+                    <!-- White shirt under -->
+                    <rect x="78" y="135" width="24" height="30" rx="4" fill="#f0f4f8" opacity="0.7"/>
+                    <!-- Stethoscope -->
+                    <path d="M72 125 Q60 150 65 170 Q70 185 85 185 Q100 185 105 170 Q110 150 98 125" stroke="#00d4aa" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <!-- Stethoscope head -->
+                    <circle cx="85" cy="185" r="10" fill="none" stroke="#00d4aa" stroke-width="2.5" class="doctor-stethoscope-heart"/>
+                    <circle cx="85" cy="185" r="5" fill="rgba(0,212,170,0.3)" class="doctor-stethoscope-heart"/>
+                    <!-- Neck -->
+                    <rect x="78" y="95" width="24" height="24" rx="8" fill="#f5c9a0"/>
+                    <!-- Head -->
+                    <ellipse cx="90" cy="72" rx="40" ry="42" fill="#f5c9a0"/>
+                    <!-- Doctor's mirror headband -->
+                    <rect x="52" y="52" width="76" height="14" rx="5" fill="#1e3a5f" opacity="0.85"/>
+                    <!-- Mirror disc -->
+                    <circle cx="90" cy="59" r="10" fill="#c0c8d8" stroke="#00d4aa" stroke-width="1.5"/>
+                    <circle cx="90" cy="59" r="4" fill="none" stroke="#1e3a5f" stroke-width="1.5"/>
+                    <!-- Eyes -->
+                    <ellipse cx="76" cy="78" rx="7" ry="8" fill="white" class="doctor-eye-l"/>
+                    <ellipse cx="104" cy="78" rx="7" ry="8" fill="white" class="doctor-eye-r"/>
+                    <circle cx="78" cy="79" r="4" fill="#1a2744"/>
+                    <circle cx="106" cy="79" r="4" fill="#1a2744"/>
+                    <circle cx="79" cy="78" r="1.5" fill="white"/>
+                    <circle cx="107" cy="78" r="1.5" fill="white"/>
+                    <!-- Smile -->
+                    <path d="M75 92 Q90 104 105 92" stroke="#e07a5f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                    <!-- Cheek blush -->
+                    <ellipse cx="68" cy="87" rx="8" ry="5" fill="#f4a261" opacity="0.35"/>
+                    <ellipse cx="112" cy="87" rx="8" ry="5" fill="#f4a261" opacity="0.35"/>
+                    <!-- Ears -->
+                    <ellipse cx="50" cy="72" rx="7" ry="9" fill="#f5c9a0"/>
+                    <ellipse cx="130" cy="72" rx="7" ry="9" fill="#f5c9a0"/>
+                    <!-- Hair -->
+                    <path d="M52 55 Q60 28 90 25 Q120 28 128 55" fill="#3d2b1f" opacity="0.85"/>
+                    <!-- Left arm (static) -->
+                    <rect x="15" y="120" width="22" height="60" rx="11" fill="#1e3a5f"/>
+                    <rect x="12" y="172" width="28" height="18" rx="8" fill="#f5c9a0"/>
+                    <!-- Right arm (waving) -->
+                    <g class="doctor-arm-wave">
+                        <rect x="143" y="118" width="22" height="58" rx="11" fill="#1e3a5f"/>
+                        <rect x="140" y="168" width="28" height="18" rx="8" fill="#f5c9a0"/>
+                        <!-- Wave hand fingers -->
+                        <ellipse cx="148" cy="182" rx="4" ry="6" fill="#f5c9a0"/>
+                        <ellipse cx="156" cy="183" rx="4" ry="6" fill="#f5c9a0"/>
+                        <ellipse cx="163" cy="181" rx="4" ry="5" fill="#f5c9a0"/>
+                    </g>
+                    <!-- Clipboard -->
+                    <rect x="22" y="148" width="28" height="36" rx="4" fill="white" opacity="0.9"/>
+                    <rect x="25" y="143" width="22" height="6" rx="3" fill="#94a3b8"/>
+                    <line x1="26" y1="158" x2="46" y2="158" stroke="#00d4aa" stroke-width="1.5"/>
+                    <line x1="26" y1="164" x2="42" y2="164" stroke="#cbd5e1" stroke-width="1.5"/>
+                    <line x1="26" y1="170" x2="44" y2="170" stroke="#cbd5e1" stroke-width="1.5"/>
+                    <!-- Legs -->
+                    <rect x="55" y="200" width="28" height="18" rx="9" fill="#1e3a5f"/>
+                    <rect x="97" y="200" width="28" height="18" rx="9" fill="#1e3a5f"/>
+                    <!-- Shoes -->
+                    <ellipse cx="69" cy="218" rx="20" ry="7" fill="#0f172a"/>
+                    <ellipse cx="111" cy="218" rx="20" ry="7" fill="#0f172a"/>
+                    <!-- Name badge -->
+                    <rect x="82" y="138" width="36" height="22" rx="4" fill="white" opacity="0.9"/>
+                    <text x="100" y="148" font-family="Inter,sans-serif" font-size="5" fill="#00d4aa" text-anchor="middle" font-weight="700">MediScan</text>
+                    <text x="100" y="156" font-family="Inter,sans-serif" font-size="4" fill="#64748b" text-anchor="middle">AI Doctor</text>
+                </svg>
+                <div class="doctor-shadow"></div>
+            </div>
+
             <div class="auth-logo">
                 <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="40" height="40" rx="10" fill="#00d4aa" fill-opacity="0.15"/>

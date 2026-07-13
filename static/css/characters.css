@@ -1,0 +1,195 @@
+/* ═══════════════════════════════════════════════════════════
+   MediScan AI — Animated Characters (Robot + Doctor)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Shared float ──────────────────────────────────────────── */
+@keyframes floatY {
+    0%,100% { transform: translateY(0)   rotate(-1.5deg); }
+    50%      { transform: translateY(-18px) rotate(1.5deg);  }
+}
+@keyframes floatYSlow {
+    0%,100% { transform: translateY(0)   rotate(-1deg); }
+    50%      { transform: translateY(-12px) rotate(1deg);  }
+}
+@keyframes floatYTiny {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+
+/* ── Eye blink ─────────────────────────────────────────────── */
+@keyframes blink {
+    0%,88%,100% { transform: scaleY(1); }
+    92%          { transform: scaleY(0.08); }
+}
+
+/* ── Arm wave ──────────────────────────────────────────────── */
+@keyframes wave {
+    0%,100% { transform: rotate(0deg);   }
+    25%      { transform: rotate(-28deg); }
+    75%      { transform: rotate(18deg);  }
+}
+
+/* ── Antenna pulse ─────────────────────────────────────────── */
+@keyframes antennaPulse {
+    0%,100% { opacity:1; r:4; }
+    50%      { opacity:0.3; r:6; }
+}
+
+/* ── Scan beam sweep ───────────────────────────────────────── */
+@keyframes scanBeam {
+    0%   { opacity:0; transform:translateY(-40px); }
+    20%  { opacity:0.8; }
+    80%  { opacity:0.8; }
+    100% { opacity:0; transform:translateY(40px); }
+}
+
+/* ── Shadow pulse under characters ────────────────────────── */
+@keyframes shadowPulse {
+    0%,100% { transform:scaleX(1);   opacity:0.18; }
+    50%      { transform:scaleX(0.6); opacity:0.08; }
+}
+
+/* ── Doctor heartbeat (stethoscope) ───────────────────────── */
+@keyframes heartbeat {
+    0%,100% { transform:scale(1); }
+    14%      { transform:scale(1.18); }
+    28%      { transform:scale(1); }
+    42%      { transform:scale(1.12); }
+    56%      { transform:scale(1); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ROBOT CHARACTER — used in scan processing + dashboard
+   ══════════════════════════════════════════════════════════════ */
+.robot-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 160px;
+    user-select: none;
+    pointer-events: none;
+}
+.robot-svg {
+    animation: floatY 3.2s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(0,212,170,0.25));
+    width: 140px;
+}
+.robot-shadow {
+    width: 80px; height: 14px;
+    background: radial-gradient(ellipse, rgba(0,212,170,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: shadowPulse 3.2s ease-in-out infinite;
+    margin-top: -4px;
+}
+
+/* Eye blink container */
+.robot-eye-l,
+.robot-eye-r {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 3.8s ease-in-out infinite;
+}
+.robot-eye-r { animation-delay: 0.12s; }
+
+/* Arm wave */
+.robot-arm-wave {
+    transform-box: fill-box;
+    transform-origin: 50% 10%;
+    animation: wave 2.4s ease-in-out infinite;
+}
+
+/* Antenna dot */
+.robot-antenna-dot {
+    animation: antennaPulse 1.4s ease-in-out infinite;
+}
+
+/* ── Processing scan beam ──────────────────────────────────── */
+.robot-scan-beam {
+    animation: scanBeam 1.8s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DOCTOR CHARACTER — used on login / register brand panel
+   ══════════════════════════════════════════════════════════════ */
+.doctor-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 180px;
+    margin: 0 auto 24px;
+    user-select: none;
+    pointer-events: none;
+}
+.doctor-svg {
+    animation: floatYSlow 3.8s ease-in-out infinite;
+    filter: drop-shadow(0 10px 28px rgba(0,212,170,0.2));
+    width: 160px;
+}
+.doctor-shadow {
+    width: 90px; height: 14px;
+    background: radial-gradient(ellipse, rgba(0,212,170,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: shadowPulse 3.8s ease-in-out infinite;
+    margin-top: -6px;
+}
+.doctor-arm-wave {
+    transform-box: fill-box;
+    transform-origin: 50% 15%;
+    animation: wave 2.8s ease-in-out infinite;
+}
+.doctor-stethoscope-heart {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: heartbeat 1.6s ease-in-out infinite;
+}
+.doctor-eye-l,
+.doctor-eye-r {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 4.2s ease-in-out infinite;
+}
+.doctor-eye-r { animation-delay: 0.15s; }
+
+/* ══════════════════════════════════════════════════════════════
+   MINI FLOATING ROBOTS — ambient decorations on dashboard
+   ══════════════════════════════════════════════════════════════ */
+.mini-robot-wrap {
+    position: fixed;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    opacity: 0.55;
+}
+.mini-robot-wrap svg { animation: floatYTiny 4s ease-in-out infinite; }
+.mini-robot-wrap:nth-child(2) svg { animation-delay: 1.2s; animation-duration: 5s; }
+.mini-robot-wrap:nth-child(3) svg { animation-delay: 2.4s; animation-duration: 3.6s; }
+
+/* Positions */
+.mini-bot-a { bottom: 120px; left: 20px;  }
+.mini-bot-b { top: 160px;    right: 18px; opacity:0.35; }
+
+/* ══════════════════════════════════════════════════════════════
+   SCAN OVERLAY ROBOT SCENE
+   ══════════════════════════════════════════════════════════════ */
+.scan-robot-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.scan-robot-scene .robot-svg { width: 100px; }
+.scan-robot-scene .robot-shadow { width: 55px; }
+
+/* ══════════════════════════════════════════════════════════════
+   EMPTY STATE ROBOT SCENE (dashboard)
+   ══════════════════════════════════════════════════════════════ */
+.empty-robot-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.empty-robot-scene .robot-svg { width: 120px; }
+.empty-robot-scene .robot-shadow { width: 65px; }
