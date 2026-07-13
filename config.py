@@ -14,6 +14,15 @@ class Config:
     # real key here.
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-only-secret-change-in-prod-abc123')
 
+    # ── Session & Remember-me ─────────────────────────────────────────────────
+    # Keep "Remember me" sessions alive for 30 days
+    from datetime import timedelta
+    REMEMBER_COOKIE_DURATION  = timedelta(days=30)
+    REMEMBER_COOKIE_HTTPONLY  = True
+    REMEMBER_COOKIE_SAMESITE  = 'Lax'
+    SESSION_COOKIE_SAMESITE   = 'Lax'
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)   # regular session = 7 days
+
     # ── Database ──────────────────────────────────────────────────────────────
     # Railway / Render inject DATABASE_URL for Postgres.
     # Falls back to local SQLite for development.
