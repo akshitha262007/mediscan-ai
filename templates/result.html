@@ -39,22 +39,22 @@
         </div>
         <div class="verdict-meta">
             <div class="verdict-meta-item">
-                <span class="vmeta-label">Scanned</span>
+                <span class="vmeta-label" data-i18n="result_scanned">Scanned</span>
                 <span class="vmeta-value">{{ scan.uploaded_at.strftime('%d %b %Y %H:%M') }}</span>
             </div>
             <div class="verdict-meta-item">
-                <span class="vmeta-label">File Type</span>
+                <span class="vmeta-label" data-i18n="result_file_type">File Type</span>
                 <span class="vmeta-value">{{ scan.file_type.upper() }}</span>
             </div>
             <div class="verdict-meta-item">
-                <span class="vmeta-label">Risk Level</span>
+                <span class="vmeta-label" data-i18n="result_risk_level">Risk Level</span>
                 <span class="vmeta-value">{{ scan.score_label }}</span>
             </div>
         </div>
         <a href="{{ url_for('scan.download_pdf', scan_id=scan.id) }}"
            class="btn-download" id="downloadBtn">
             <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-            Download Report
+            <span data-i18n="result_download">Download Report</span>
         </a>
     </div>
 </div>
@@ -70,7 +70,7 @@
                 <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
             </div>
             <div>
-                <h3 class="module-name">Error Level Analysis</h3>
+                <h3 class="module-name" data-i18n="scan_ela_title">Error Level Analysis</h3>
                 {% if ela.available %}
                 <span class="module-badge module-badge-{{ ela.label | lower }}">{{ ela.label }}</span>
                 {% else %}
@@ -100,7 +100,7 @@
                 <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
             </div>
             <div>
-                <h3 class="module-name">Metadata Inspection</h3>
+                <h3 class="module-name" data-i18n="scan_meta_title">Metadata Inspection</h3>
                 <span class="module-badge module-badge-{{ meta.label | lower }}">{{ meta.label }}</span>
             </div>
         </div>
@@ -118,7 +118,7 @@
                 <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
             </div>
             <div>
-                <h3 class="module-name">File Integrity</h3>
+                <h3 class="module-name" data-i18n="scan_integ_title">File Integrity</h3>
                 <span class="module-badge module-badge-{{ integ.label | lower }}">{{ integ.label }}</span>
             </div>
         </div>
@@ -139,7 +139,7 @@
                 <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
             </div>
             <div>
-                <h3 class="module-name">OCR Consistency</h3>
+                <h3 class="module-name" data-i18n="scan_ocr_title">OCR Consistency</h3>
                 {% if ocr.available %}
                 <span class="module-badge module-badge-{{ ocr.label | lower }}">{{ ocr.label }}</span>
                 {% else %}
@@ -169,7 +169,7 @@
     <div class="detail-card">
         <h2 class="detail-card-title">
             <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
-            ELA Heatmap
+            <span data-i18n="result_heatmap">ELA Heatmap</span>
         </h2>
 
         {% if ela.available and ela.heatmap_url %}
@@ -214,7 +214,7 @@
     <div class="detail-card">
         <h2 class="detail-card-title">
             <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-            Forensic Findings
+            <span data-i18n="result_findings">Forensic Findings</span>
             <span class="findings-count">{{ report.all_findings | length }}</span>
         </h2>
 
@@ -244,30 +244,30 @@
 
 <!-- ══════════════════════════════════════════════════ TECHNICAL DETAILS -->
 <div class="tech-details-card">
-    <h2 class="detail-card-title">Technical Details</h2>
+    <h2 class="detail-card-title" data-i18n="result_tech">Technical Details</h2>
     <div class="tech-details-grid">
         <div class="tech-item">
-            <span class="tech-label">Scan ID</span>
+            <span class="tech-label" data-i18n="result_scan_id">Scan ID</span>
             <span class="tech-value mono">{{ scan.id }}</span>
         </div>
         <div class="tech-item">
-            <span class="tech-label">SHA-256 Hash</span>
+            <span class="tech-label" data-i18n="result_hash">SHA-256 Hash</span>
             <span class="tech-value mono">{{ scan.file_hash or '—' }}</span>
         </div>
         <div class="tech-item">
-            <span class="tech-label">File Type</span>
+            <span class="tech-label" data-i18n="dash_col_type">File Type</span>
             <span class="tech-value">{{ scan.file_type.upper() }}</span>
         </div>
         <div class="tech-item">
-            <span class="tech-label">File Size</span>
+            <span class="tech-label" data-i18n="result_file_size">File Size</span>
             <span class="tech-value">{{ integ.file_size_kb }} KB</span>
         </div>
         <div class="tech-item">
-            <span class="tech-label">Analysed By</span>
+            <span class="tech-label" data-i18n="result_analysed_by">Analysed By</span>
             <span class="tech-value">{{ current_user.username }}</span>
         </div>
         <div class="tech-item">
-            <span class="tech-label">Organisation</span>
+            <span class="tech-label" data-i18n="result_org">Organisation</span>
             <span class="tech-value">{{ current_user.organization or '—' }}</span>
         </div>
     </div>
@@ -275,12 +275,12 @@
     <div class="result-actions">
         <a href="{{ url_for('scan.scan_page') }}" class="btn-secondary">
             <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd"/></svg>
-            New Scan
+            <span data-i18n="nav_new_scan">New Scan</span>
         </a>
         <a href="{{ url_for('scan.download_pdf', scan_id=scan.id) }}"
            class="btn-primary">
             <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-            Download PDF Report
+            <span data-i18n="result_download_pdf">Download PDF Report</span>
         </a>
     </div>
 </div>

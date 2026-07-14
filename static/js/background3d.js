@@ -1,30 +1,30 @@
 /**
  * MediScan AI — 3D Animated Background
+ * Medical colour palette: light blues, ice white, sky, clinical cyan
  *
- * Effects (all pure Canvas 2D, no libraries):
- *   1. Perspective receding grid (Tron-style floor)
- *   2. Floating wireframe 3-D cubes / octahedrons rotating in space
- *   3. Star-field with depth (particles moving toward viewer)
- *   4. Ambient colour nebula orbs (teal / purple / blue)
- *   5. Vignette edge darkening
- *   6. Pause when tab hidden (saves CPU / battery)
+ * Effects (pure Canvas 2D):
+ *   1. Perspective receding grid
+ *   2. Wireframe cubes/rings spread across the full viewport
+ *   3. Star-field with depth
+ *   4. Ambient nebula orbs
+ *   5. Vignette
  */
 (function () {
     'use strict';
 
-    /* ── canvas setup ───────────────────────────────────────────── */
     const canvas = document.getElementById('bg3dCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
     let W, H, cx, cy, raf;
-    let t = 0;              // master time counter
+    let t = 0;
 
-    /* colour shortcuts */
-    const C_TEAL   = '0,212,170';
-    const C_PURPLE = '147,51,234';
-    const C_BLUE   = '59,130,246';
-    const C_CYAN   = '6,182,212';
+    /* ── Medical colour palette ─────────────────────────────────── */
+    const C_SKYBLUE  = '100,180,255';   // bright sky blue
+    const C_ICE      = '200,230,255';   // near-white ice blue
+    const C_CYAN     = '0,200,230';     // clinical cyan
+    const C_ROYAL    = '60,120,220';    // royal medical blue
+    const C_WHITE    = '230,245,255';   // soft white
 
     function resize () {
         W = canvas.width  = window.innerWidth;
@@ -34,14 +34,14 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       1. NEBULA / COLOUR ORBS
-       ══════════════════════════════════════════════════════════════ */
+       1. NEBULA ORBS — muted blue/white tones
+    ══════════════════════════════════════════════════════════════ */
     const ORBS = [
-        { bx: 0.18, by: 0.20, r: 0.42, c: C_TEAL,   s: 0.00025, ph: 0    },
-        { bx: 0.80, by: 0.75, r: 0.36, c: C_PURPLE,  s: 0.00035, ph: 2.1  },
-        { bx: 0.55, by: 0.45, r: 0.28, c: C_BLUE,    s: 0.00045, ph: 4.2  },
-        { bx: 0.08, by: 0.82, r: 0.22, c: C_CYAN,    s: 0.00055, ph: 1.05 },
-        { bx: 0.92, by: 0.15, r: 0.20, c: C_TEAL,    s: 0.00030, ph: 3.14 },
+        { bx: 0.15, by: 0.18, r: 0.40, c: C_SKYBLUE, s: 0.00022, ph: 0    },
+        { bx: 0.82, by: 0.72, r: 0.34, c: C_ROYAL,   s: 0.00032, ph: 2.1  },
+        { bx: 0.52, by: 0.48, r: 0.26, c: C_CYAN,    s: 0.00042, ph: 4.2  },
+        { bx: 0.06, by: 0.80, r: 0.20, c: C_ICE,     s: 0.00052, ph: 1.05 },
+        { bx: 0.90, by: 0.12, r: 0.18, c: C_WHITE,   s: 0.00028, ph: 3.14 },
     ];
 
     function drawOrbs () {
@@ -50,8 +50,8 @@
             const oy = H * (o.by + Math.cos(t * o.s * 6000 + o.ph * 1.4) * 0.055);
             const r  = Math.min(W, H) * o.r;
             const g  = ctx.createRadialGradient(ox, oy, 0, ox, oy, r);
-            g.addColorStop(0,   `rgba(${o.c},0.13)`);
-            g.addColorStop(0.5, `rgba(${o.c},0.06)`);
+            g.addColorStop(0,   `rgba(${o.c},0.10)`);
+            g.addColorStop(0.5, `rgba(${o.c},0.04)`);
             g.addColorStop(1,   `rgba(${o.c},0)`);
             ctx.fillStyle = g;
             ctx.beginPath();
@@ -61,21 +61,21 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       2. STAR-FIELD (depth particles)
-       ══════════════════════════════════════════════════════════════ */
-    const STAR_COUNT = 220;
+       2. STAR-FIELD — white/ice blue stars
+    ══════════════════════════════════════════════════════════════ */
+    const STAR_COUNT = 200;
     const stars = Array.from({ length: STAR_COUNT }, () => ({
         x  : (Math.random() - 0.5) * 3000,
         y  : (Math.random() - 0.5) * 3000,
         z  : Math.random() * 1600 + 50,
-        spd: Math.random() * 1.2 + 0.3,
-        col: Math.random() < 0.15 ? C_TEAL : (Math.random() < 0.1 ? C_CYAN : '255,255,255'),
+        spd: Math.random() * 1.0 + 0.3,
+        col: Math.random() < 0.2 ? C_SKYBLUE : (Math.random() < 0.1 ? C_CYAN : C_ICE),
     }));
 
     function drawStars () {
         const FOV = 420;
         stars.forEach(s => {
-            s.z -= s.spd * 1.5;
+            s.z -= s.spd * 1.4;
             if (s.z <= 1) {
                 s.z = 1600;
                 s.x = (Math.random() - 0.5) * 3000;
@@ -85,8 +85,8 @@
             const sx    = cx + s.x * scale;
             const sy    = cy + s.y * scale;
             if (sx < -10 || sx > W + 10 || sy < -10 || sy > H + 10) return;
-            const r   = Math.max(0.2, scale * 1.6);
-            const alp = Math.min(1, scale * 0.85);
+            const r   = Math.max(0.2, scale * 1.4);
+            const alp = Math.min(0.9, scale * 0.80);
             ctx.beginPath();
             ctx.arc(sx, sy, r, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${s.col},${alp})`;
@@ -95,29 +95,29 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       3. PERSPECTIVE GRID (floor sweeping away)
-       ══════════════════════════════════════════════════════════════ */
+       3. PERSPECTIVE GRID — icy blue lines
+    ══════════════════════════════════════════════════════════════ */
     function drawGrid () {
-        const horizon  = cy * 0.62;
+        const horizon  = cy * 0.60;
         const FOV      = 380;
         const CELL     = 130;
         const LINES    = 22;
-        const scroll   = (t * 40) % CELL;   // grid moves toward viewer
+        const scroll   = (t * 38) % CELL;
 
         ctx.save();
 
-        /* — horizontal rows — */
+        /* horizontal rows */
         for (let i = 0; i <= LINES; i++) {
             const z     = ((i * CELL) - scroll + CELL) % (CELL * LINES);
             const scale = FOV / (FOV + z);
             const y     = horizon + (H - horizon) * (1 - scale) * 1.9;
             if (y > H + 4) continue;
             const hw    = W * 0.7 * scale;
-            const alp   = Math.min(0.45, scale * 0.55);
+            const alp   = Math.min(0.35, scale * 0.45);
             const gr    = ctx.createLinearGradient(cx - hw, 0, cx + hw, 0);
-            gr.addColorStop(0,   `rgba(${C_TEAL},0)`);
-            gr.addColorStop(0.5, `rgba(${C_TEAL},${alp})`);
-            gr.addColorStop(1,   `rgba(${C_TEAL},0)`);
+            gr.addColorStop(0,   `rgba(${C_SKYBLUE},0)`);
+            gr.addColorStop(0.5, `rgba(${C_SKYBLUE},${alp})`);
+            gr.addColorStop(1,   `rgba(${C_SKYBLUE},0)`);
             ctx.beginPath();
             ctx.moveTo(cx - hw, y);
             ctx.lineTo(cx + hw, y);
@@ -126,16 +126,16 @@
             ctx.stroke();
         }
 
-        /* — vertical columns converging to horizon — */
+        /* vertical columns */
         const VCOLS = 18;
         for (let i = 0; i <= VCOLS; i++) {
             const frac  = i / VCOLS;
             const nearX = cx + (frac - 0.5) * W * 1.4;
             const farX  = cx + (frac - 0.5) * 30;
-            const alp   = 0.28 * (1 - Math.abs(frac - 0.5) * 1.8);
+            const alp   = 0.22 * (1 - Math.abs(frac - 0.5) * 1.8);
             const gr    = ctx.createLinearGradient(farX, horizon, nearX, H);
-            gr.addColorStop(0, `rgba(${C_TEAL},0)`);
-            gr.addColorStop(1, `rgba(${C_TEAL},${Math.max(0, alp)})`);
+            gr.addColorStop(0, `rgba(${C_SKYBLUE},0)`);
+            gr.addColorStop(1, `rgba(${C_SKYBLUE},${Math.max(0, alp)})`);
             ctx.beginPath();
             ctx.moveTo(farX, horizon);
             ctx.lineTo(nearX, H);
@@ -144,11 +144,11 @@
             ctx.stroke();
         }
 
-        /* — horizon glow — */
+        /* horizon glow */
         const hg = ctx.createLinearGradient(0, horizon - 50, 0, horizon + 60);
-        hg.addColorStop(0,   `rgba(${C_TEAL},0)`);
-        hg.addColorStop(0.5, `rgba(${C_TEAL},0.18)`);
-        hg.addColorStop(1,   `rgba(${C_TEAL},0)`);
+        hg.addColorStop(0,   `rgba(${C_CYAN},0)`);
+        hg.addColorStop(0.5, `rgba(${C_CYAN},0.14)`);
+        hg.addColorStop(1,   `rgba(${C_CYAN},0)`);
         ctx.fillStyle = hg;
         ctx.fillRect(0, horizon - 50, W, 110);
 
@@ -156,12 +156,14 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       4. WIREFRAME 3-D CUBES
-       ══════════════════════════════════════════════════════════════ */
+       4. WIREFRAME 3-D CUBES — spread across FULL viewport
+          Key fix: use screenX/Y offsets so cubes appear at screen
+          edges, not just the centre
+    ══════════════════════════════════════════════════════════════ */
     const EDGES = [
-        [0,1],[1,2],[2,3],[3,0],  // front
-        [4,5],[5,6],[6,7],[7,4],  // back
-        [0,4],[1,5],[2,6],[3,7],  // sides
+        [0,1],[1,2],[2,3],[3,0],
+        [4,5],[5,6],[6,7],[7,4],
+        [0,4],[1,5],[2,6],[3,7],
     ];
 
     function verts (s) {
@@ -172,46 +174,64 @@
         ];
     }
 
-    /* rotation helpers */
     const rx = (p, a) => [p[0], p[1]*Math.cos(a)-p[2]*Math.sin(a), p[1]*Math.sin(a)+p[2]*Math.cos(a)];
     const ry = (p, a) => [p[0]*Math.cos(a)+p[2]*Math.sin(a), p[1], -p[0]*Math.sin(a)+p[2]*Math.cos(a)];
     const rz = (p, a) => [p[0]*Math.cos(a)-p[1]*Math.sin(a), p[0]*Math.sin(a)+p[1]*Math.cos(a), p[2]];
 
-    function project (p, tx, ty, tz, FOV) {
-        const pz = p[2] + tz + FOV;
+    /* Project using SCREEN-SPACE offset (sx, sy) so cubes are
+       pinned to specific screen regions instead of all converging
+       to the same vanishing point.                                */
+    function projectScreen (p, sz, sx, sy) {
+        /* sz = depth offset (z-axis); sx/sy = screen-space anchor */
+        const pz = p[2] + sz + 300;
         if (pz <= 10) return null;
-        const sc = FOV / pz;
-        return [cx + (p[0] + tx) * sc, cy + (p[1] + ty) * sc, sc];
+        const sc = 300 / pz;
+        return [sx + p[0] * sc, sy + p[1] * sc, sc];
     }
 
-    /* cube definitions  — position, size, rotation speeds, colour */
+    /* Each cube has a screenX/Y (fraction of W/H) anchor so they
+       spread across all four corners and edges of the display.    */
     const CUBES = [
-        { x:-310, y:-110, z:180, sz:85,  ax:0.41, ay:0.72, az:0.18, c:C_TEAL   },
-        { x: 360, y:  55, z:310, sz:60,  ax:0.62, ay:0.30, az:0.50, c:C_PURPLE },
-        { x:-160, y: 210, z:520, sz:110, ax:0.22, ay:0.85, az:0.12, c:C_BLUE   },
-        { x: 210, y:-210, z:140, sz:50,  ax:0.90, ay:0.42, az:0.70, c:C_TEAL   },
-        { x:-430, y: 110, z:420, sz:72,  ax:0.33, ay:0.60, az:0.40, c:C_CYAN   },
-        { x: 460, y:-160, z:640, sz:95,  ax:0.52, ay:0.20, az:0.82, c:C_PURPLE },
-        { x:  80, y: 280, z:260, sz:55,  ax:0.70, ay:0.55, az:0.35, c:C_BLUE   },
+        // top-left region
+        { fx:0.08, fy:0.15, sz:120, sz3:80,  ax:0.41, ay:0.72, az:0.18, c:C_SKYBLUE },
+        // top-right region
+        { fx:0.90, fy:0.12, sz:140, sz3:65,  ax:0.55, ay:0.30, az:0.44, c:C_ICE     },
+        // bottom-left region
+        { fx:0.07, fy:0.80, sz:100, sz3:90,  ax:0.28, ay:0.60, az:0.15, c:C_CYAN    },
+        // bottom-right region
+        { fx:0.92, fy:0.82, sz:130, sz3:75,  ax:0.62, ay:0.45, az:0.55, c:C_ROYAL   },
+        // mid-left
+        { fx:0.04, fy:0.48, sz:160, sz3:55,  ax:0.38, ay:0.82, az:0.30, c:C_WHITE   },
+        // mid-right
+        { fx:0.96, fy:0.52, sz:150, sz3:60,  ax:0.70, ay:0.25, az:0.65, c:C_SKYBLUE },
+        // upper-mid-left
+        { fx:0.22, fy:0.06, sz:180, sz3:50,  ax:0.50, ay:0.55, az:0.40, c:C_ICE     },
+        // upper-mid-right
+        { fx:0.78, fy:0.08, sz:170, sz3:70,  ax:0.33, ay:0.68, az:0.22, c:C_CYAN    },
+        // lower-mid-left
+        { fx:0.18, fy:0.92, sz:190, sz3:85,  ax:0.45, ay:0.38, az:0.58, c:C_ROYAL   },
+        // lower-mid-right
+        { fx:0.82, fy:0.90, sz:145, sz3:62,  ax:0.60, ay:0.50, az:0.35, c:C_WHITE   },
     ];
 
     function drawCube (cube) {
-        const FOV = 520;
-        let vs = verts(cube.sz);
+        const sx = cube.fx * W;
+        const sy = cube.fy * H;
+        let vs = verts(cube.sz3);
         vs = vs.map(p => rx(p, t * cube.ax));
         vs = vs.map(p => ry(p, t * cube.ay));
         vs = vs.map(p => rz(p, t * cube.az));
-        const pr = vs.map(p => project(p, cube.x, cube.y, cube.z, FOV));
+        const pr = vs.map(p => projectScreen(p, cube.sz, sx, sy));
         if (pr.some(p => p === null)) return;
 
         const avgSc = pr.reduce((s, p) => s + (p ? p[2] : 0), 0) / pr.length;
-        const alp   = Math.min(0.75, avgSc * 0.7);
+        const alp   = Math.min(0.65, avgSc * 1.8);
 
         ctx.save();
         ctx.strokeStyle = `rgba(${cube.c},${alp})`;
-        ctx.lineWidth   = Math.max(0.4, avgSc * 1.2);
-        ctx.shadowColor = `rgba(${cube.c},0.4)`;
-        ctx.shadowBlur  = 6;
+        ctx.lineWidth   = Math.max(0.4, avgSc * 1.0);
+        ctx.shadowColor = `rgba(${cube.c},0.35)`;
+        ctx.shadowBlur  = 5;
 
         EDGES.forEach(([a, b]) => {
             if (!pr[a] || !pr[b]) return;
@@ -224,18 +244,19 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       5. FLOATING RING / TORUS-LIKE CIRCLE OUTLINES
-       ══════════════════════════════════════════════════════════════ */
+       5. FLOATING RINGS — spread across screen similarly
+    ══════════════════════════════════════════════════════════════ */
     const RINGS = [
-        { x:-200, y: 100, z:350, r:70,  ax:0.3,  ay:0.5,  c:C_TEAL   },
-        { x: 300, y:-180, z:250, r:50,  ax:0.5,  ay:0.25, c:C_PURPLE },
-        { x: 100, y: 250, z:480, r:90,  ax:0.2,  ay:0.6,  c:C_BLUE   },
+        { fx:0.12, fy:0.42, sz:140, r:55, ax:0.32, ay:0.50, c:C_SKYBLUE },
+        { fx:0.88, fy:0.38, sz:160, r:45, ax:0.48, ay:0.26, c:C_ICE     },
+        { fx:0.50, fy:0.88, sz:180, r:70, ax:0.22, ay:0.62, c:C_CYAN    },
+        { fx:0.50, fy:0.10, sz:150, r:40, ax:0.55, ay:0.40, c:C_ROYAL   },
     ];
 
     function drawRings () {
-        const FOV = 520;
         RINGS.forEach(ring => {
-            /* approximate a tilted ellipse via parametric points */
+            const sx = ring.fx * W;
+            const sy = ring.fy * H;
             const pts = 48;
             const projected = [];
             for (let i = 0; i < pts; i++) {
@@ -243,18 +264,18 @@
                 let p = [Math.cos(a) * ring.r, Math.sin(a) * ring.r, 0];
                 p = rx(p, t * ring.ax);
                 p = ry(p, t * ring.ay);
-                const pr = project(p, ring.x, ring.y, ring.z, FOV);
+                const pr = projectScreen(p, ring.sz, sx, sy);
                 projected.push(pr);
             }
             if (projected.some(p => p === null)) return;
             const avgSc = projected.reduce((s, p) => s + p[2], 0) / projected.length;
-            const alp   = Math.min(0.55, avgSc * 0.65);
+            const alp   = Math.min(0.50, avgSc * 1.6);
 
             ctx.save();
             ctx.strokeStyle = `rgba(${ring.c},${alp})`;
-            ctx.lineWidth   = Math.max(0.3, avgSc * 0.8);
-            ctx.shadowColor = `rgba(${ring.c},0.3)`;
-            ctx.shadowBlur  = 5;
+            ctx.lineWidth   = Math.max(0.3, avgSc * 0.7);
+            ctx.shadowColor = `rgba(${ring.c},0.25)`;
+            ctx.shadowBlur  = 4;
             ctx.beginPath();
             projected.forEach((p, i) => {
                 if (!p) return;
@@ -268,24 +289,24 @@
 
     /* ══════════════════════════════════════════════════════════════
        6. VIGNETTE
-       ══════════════════════════════════════════════════════════════ */
+    ══════════════════════════════════════════════════════════════ */
     function drawVignette () {
         const g = ctx.createRadialGradient(cx, cy, Math.min(W,H)*0.3, cx, cy, Math.max(W,H)*0.85);
         g.addColorStop(0, 'rgba(0,0,0,0)');
-        g.addColorStop(1, 'rgba(0,0,0,0.55)');
+        g.addColorStop(1, 'rgba(0,0,0,0.60)');
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, W, H);
     }
 
     /* ══════════════════════════════════════════════════════════════
-       MAIN RENDER LOOP
-       ══════════════════════════════════════════════════════════════ */
+       MAIN LOOP
+    ══════════════════════════════════════════════════════════════ */
     function render () {
-        /* base background */
-        const bg = ctx.createLinearGradient(0, 0, 0, H);
-        bg.addColorStop(0, '#03080f');
-        bg.addColorStop(0.5, '#050d1e');
-        bg.addColorStop(1, '#03080f');
+        /* Dark navy-to-midnight background (looks clinical/medical) */
+        const bg = ctx.createLinearGradient(0, 0, W * 0.5, H);
+        bg.addColorStop(0,   '#020810');
+        bg.addColorStop(0.5, '#030c1c');
+        bg.addColorStop(1,   '#020810');
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, W, H);
 
@@ -300,17 +321,12 @@
         raf  = requestAnimationFrame(render);
     }
 
-    /* ── init ── */
     window.addEventListener('resize', resize);
     resize();
     render();
 
-    /* pause when tab hidden — saves CPU/battery */
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            cancelAnimationFrame(raf);
-        } else {
-            render();
-        }
+        if (document.hidden) cancelAnimationFrame(raf);
+        else render();
     });
 }());
