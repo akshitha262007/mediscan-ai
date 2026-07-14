@@ -5,13 +5,16 @@ AI-powered medical document analysis via Google Gemini.
 When GEMINI_API_KEY is not set the functions return graceful placeholder
 responses — the full UI is built and works; it activates the moment a key
 is added to the Railway environment variables.
+
+KEY FIX: API key is read fresh on every call (os.environ.get inside the
+function) so redeploying after adding the key always picks it up correctly.
+Supports both google-generativeai >=0.7 (new genai.Client style) and
+older versions (GenerativeModel style) with automatic fallback.
 """
 
 import os
 import json
 import re
-
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 
 # ── Prompt templates ──────────────────────────────────────────────────────────
 
@@ -58,12 +61,36 @@ Your responsibilities:
 """
 
 
-# ── Helper ─────────────────────────────────────────────────────────────────────
+# ── Core helper: generate text with robust SDK version handling ───────────────
 
-def _gemini_model():
-    import google.generativeai as genai
-    genai.configure(api_key=GEMINI_API_KEY)
-    return genai.GenerativeModel('gemini-1.5-flash')
+def _generate(prompt: str) -> str:
+    """
+    Send a prompt to Gemini and return the response text.
+    Reads API key fresh each call so Railway env vars are always current.
+    Tries the new google-genai Client API first, falls back to the older
+    google.generativeai GenerativeModel style.
+    """
+    api_key = os.environ.get('GEMINI_API_KEY', '').strip()
+    if not api_key:
+        raise RuntimeError('GEMINI_API_KEY not set')
+
+    # ── Attempt 1: new google-genai SDK (>=1.0)  ─────────────────────────────
+    try:
+        import google.genai as genai  # noqa: F401
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=prompt,
+        )
+        return response.text
+    except (ImportError, AttributeError):
+        pass  # fall through to legacy SDK
+
+    # ── Attempt 2: legacy google-generativeai SDK (0.7–0.8) ─────────────────
+    import google.generativeai as genai_legacy
+    genai_legacy.configure(api_key=api_key)
+    model = genai_legacy.GenerativeModel('gemini-1.5-flash')
+    return model.generate_content(prompt).text
 
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -74,19 +101,20 @@ def analyze_medical_content(ocr_text: str) -> dict:
     Returns a structured dict regardless of whether the key is present.
     """
     _placeholder = {
-        'available':      False,
-        'document_type':  'Unknown',
-        'key_findings':   [],
+        'available':       False,
+        'document_type':   'Unknown',
+        'key_findings':    [],
         'abnormal_values': [],
-        'medications':    [],
-        'summary':        (
+        'medications':     [],
+        'summary':         (
             'AI medical analysis will activate once the Gemini API key is '
             'configured. Add GEMINI_API_KEY to your Railway environment variables.'
         ),
         'error': 'GEMINI_API_KEY not configured',
     }
 
-    if not GEMINI_API_KEY:
+    api_key = os.environ.get('GEMINI_API_KEY', '').strip()
+    if not api_key:
         return _placeholder
 
     if not ocr_text or len(ocr_text.strip()) < 30:
@@ -96,10 +124,8 @@ def analyze_medical_content(ocr_text: str) -> dict:
         return _placeholder
 
     try:
-        model    = _gemini_model()
-        prompt   = _SUMMARY_PROMPT.format(ocr_text=ocr_text[:4000])
-        response = model.generate_content(prompt)
-        text     = response.text.strip()
+        prompt = _SUMMARY_PROMPT.format(ocr_text=ocr_text[:4000])
+        text   = _generate(prompt).strip()
 
         # Strip markdown code fences if present
         text = re.sub(r'^```(?:json)?\s*', '', text)
@@ -129,14 +155,16 @@ def get_chat_response(question: str, report_context: dict) -> dict:
     -------
     dict with keys: available (bool), response (str|None), message (str|None)
     """
-    if not GEMINI_API_KEY:
+    api_key = os.environ.get('GEMINI_API_KEY', '').strip()
+
+    if not api_key:
         return {
             'available': False,
             'response':  None,
             'message':   (
                 '🔑 AI Assistant is not yet activated. '
-                'Ask the administrator to add the GEMINI_API_KEY environment '
-                'variable on Railway to enable this feature.'
+                'Add GEMINI_API_KEY to your Railway environment variables '
+                'and redeploy to enable this feature.'
             ),
         }
 
@@ -164,12 +192,12 @@ def get_chat_response(question: str, report_context: dict) -> dict:
             medical_summary  = medical_summary,
         )
 
-        model    = _gemini_model()
-        response = model.generate_content(f"{system}\n\nUser: {question}")
+        full_prompt = f"{system}\n\nUser: {question}"
+        answer = _generate(full_prompt)
 
         return {
             'available': True,
-            'response':  response.text,
+            'response':  answer,
             'message':   None,
         }
 
@@ -177,5 +205,5 @@ def get_chat_response(question: str, report_context: dict) -> dict:
         return {
             'available': False,
             'response':  None,
-            'message':   f'AI error: {exc}',
+            'message':   f'AI error: {str(exc)}',
         }
